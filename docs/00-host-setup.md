@@ -5,15 +5,21 @@ so there is no feature install or reboot needed.
 
 ## 1. Grant yourself Hyper-V rights (one time)
 
-Your account is not in **Hyper-V Administrators**, so every VM command currently
-fails with a permissions error. Add yourself once and you never need UAC for
-lab work again.
+Your account is not in the Hyper-V administrators group, so every VM command
+currently fails with a permissions error. Add yourself once and you never need
+UAC for lab work again.
 
 Open PowerShell **as Administrator**:
 
 ```powershell
-Add-LocalGroupMember -Group "Hyper-V Administrators" -Member $env:USERNAME
+Add-LocalGroupMember -SID "S-1-5-32-578" -Member $env:USERNAME
 ```
+
+Addressed by **SID**, not by name, deliberately. Windows local group names are
+localized: on this de-DE install the group is `Hyper-V-Administratoren`, so
+`-Group "Hyper-V Administrators"` fails with `GroupNotFoundException`. The
+well-known SID `S-1-5-32-578` is identical on every locale. Same trick applies
+to `S-1-5-32-544` (Administrators / Administratoren).
 
 Then **sign out of Windows and back in** — group membership is only read at
 logon, so it will not take effect until you do.
