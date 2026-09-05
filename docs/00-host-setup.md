@@ -1,5 +1,9 @@
 # Host setup (Windows side)
 
+> Written with AI assistance (Claude Code). Every command here was run on this
+> machine, and the output recorded is what actually came back — failures
+> included.
+
 Notes from getting the lab network and three VMs running on my workstation.
 Ryzen 5 5600X, 32 GB RAM, Windows 11, VMs on the D: drive.
 

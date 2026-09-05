@@ -1,5 +1,8 @@
 # Build log
 
+> Written with AI assistance (Claude Code). The failures below are real ones
+> hit on this machine, not illustrative examples.
+
 What broke, and why. Kept because the debugging is the part worth remembering —
 and because a log of real failures reads better to anyone looking at this repo
 than a clean history that pretends none happened.
