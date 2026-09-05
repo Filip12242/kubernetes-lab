@@ -82,3 +82,18 @@ official Kubernetes docs tell you to set it permissive, and we are not going to.
 Doing three installs by hand is fine the first time. Doing it a fourth time is
 where you should reach for a **kickstart** file — the RHEL-native way to
 automate installs, and an RHCSA exam topic in its own right.
+
+## Appendix: getting the ISO
+
+`download.rockylinux.org` serves from origin rather than redirecting to a
+geo-local mirror, at roughly 0.8 MB/s from here. Use a German mirror instead:
+
+```
+https://mirror.23m.com/rocky/9/isos/x86_64/Rocky-9-latest-x86_64-minimal.iso
+```
+
+Always verify against the published `CHECKSUM` in the same directory:
+
+```powershell
+(Get-FileHash .\Rocky-9-latest-x86_64-minimal.iso -Algorithm SHA256).Hash
+```

@@ -34,3 +34,33 @@ change:
 real name on an unfamiliar machine.
 
 ---
+
+## 2026-09-05 - ISO download at 0.8 MB/s
+
+`download.rockylinux.org` was serving at **0.82 MB/s**, ~55 min for a 2.6 GB
+ISO. Assumed bad local internet. It was not.
+
+The redirector did **not** bounce us to a geo-local mirror - the effective URL
+after `-L` was unchanged, so we were pulling from origin the whole time.
+Benchmarked three German mirrors with a 20 MB range request while the slow
+transfer was still running:
+
+    download.rockylinux.org    0.82 MB/s
+    mirror.netcologne.de      10.98 MB/s
+    mirror1.hs-esslingen.de   13.17 MB/s
+    mirror.23m.com            14.79 MB/s   <- used
+
+18x. Remaining 1.9 GB finished in 120 s.
+
+Two things worth keeping:
+
+- **Benchmark before assuming the bottleneck is yours.** A ranged `curl` with
+  `-w %{speed_download}` costs seconds and settles it. Running it in parallel
+  with the slow transfer proved the line had headroom to spare.
+- **Cross-mirror resume works** when `Content-Length` matches: `curl -C -`
+  against the new host kept all 850 MB already on disk. Verified afterwards
+  with the published SHA256, which is the only thing that makes that safe:
+
+      d338032cd1cdd41c67139f2f71b4c832c8e4a21943106519db9c7137df7a63d4
+
+---
