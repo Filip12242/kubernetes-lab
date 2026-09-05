@@ -5,3 +5,35 @@
 ansible/*.log
 __pycache__/
 .vscode/
+
+# --- secrets: nothing below this line ever belongs in git ---
+# Private keys. The public .pub half is safe, so it is not excluded.
+*.key
+*.pem
+id_rsa*
+id_ed25519*
+id_ecdsa*
+!*.pub
+
+# Kubernetes credentials. admin.conf holds a cluster-admin client cert -
+# it looks like ordinary YAML sitting in the working directory. It is not.
+admin.conf
+kubeconfig
+*.kubeconfig
+.kube/
+
+# Ansible Vault password files. The encrypted vars files are safe to commit;
+# the password that opens them is not.
+.vault_pass
+*vault-pass*
+*vault_pass*
+
+# kubeadm join commands embed a live bootstrap token.
+join-command*
+
+# Generic catch-alls
+.env
+secrets.yml
+secrets.yaml
+secrets.md
+*.secret
