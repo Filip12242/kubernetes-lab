@@ -1,0 +1,9 @@
+# Anything that will be read on a Linux node must keep LF endings.
+# CRLF in a playbook or a shell script produces genuinely baffling errors.
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.sh   text eol=lf
+*.cfg  text eol=lf
+*.ks   text eol=lf
+# PowerShell stays on the Windows side.
+*.ps1  text eol=crlf
