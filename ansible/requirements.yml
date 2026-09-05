@@ -1,0 +1,17 @@
+---
+# Collection dependencies. Install with:
+#
+#     ansible-galaxy collection install -r requirements.yml --force
+#
+# Pinned deliberately. Rocky 9 ships ansible-core 2.14, and community.general
+# 10.0 onwards requires 2.15+. Installing unpinned pulls the newest release,
+# which then warns "does not support Ansible version 2.14" and fails on any
+# module it has since moved or removed.
+#
+# Version-pinning collections is the Ansible equivalent of pinning a package
+# version - without it, a machine set up next month gets different software
+# than this one did.
+
+collections:
+  - name: community.general
+    version: ">=9.0.0,<10.0.0"
