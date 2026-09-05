@@ -1,0 +1,31 @@
+---
+# One-time bootstrap: give the Ansible user passwordless sudo.
+#
+# Chicken-and-egg - this playbook needs the sudo password to grant itself
+# permission to stop needing it. So it is the one playbook you run with -K:
+#
+#     ansible-playbook bootstrap.yml -K
+#
+# Everything after this runs unattended.
+
+- name: Grant the Ansible user passwordless sudo
+  hosts: k8s_cluster
+  tasks:
+    - name: Install a sudoers drop-in for {{ ansible_user }}
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/10-{{ ansible_user }}-ansible"
+        content: "{{ ansible_user }} ALL=(ALL) NOPASSWD: ALL\n"
+        owner: root
+        group: root
+        # sudo refuses to read a sudoers file that is not 0440 or stricter.
+        mode: '0440'
+        # Writes to a temp file, runs `visudo -c` against it, and only installs
+        # it if the syntax parses. Without this, one typo makes sudo refuse to
+        # run at all on every node at once - and you would be fixing it from
+        # the console in single-user mode.
+        validate: 'visudo -cf %s'
+
+    - name: Verify passwordless sudo actually works
+      ansible.builtin.command: sudo -n true
+      become: false
+      changed_when: false
