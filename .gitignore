@@ -1,0 +1,7 @@
+.iso/
+*.iso
+*.vhdx
+*.retry
+ansible/*.log
+__pycache__/
+.vscode/

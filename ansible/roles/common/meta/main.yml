@@ -1,0 +1,5 @@
+---
+galaxy_info:
+  role_name: common
+  description: Baseline configuration for all Rocky lab nodes
+dependencies: []

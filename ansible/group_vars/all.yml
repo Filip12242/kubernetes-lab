@@ -1,0 +1,13 @@
+---
+# The Linux account you created during the Rocky install.
+ansible_user: filip
+
+timezone: Europe/Berlin
+
+# Lab network (see hyperv/New-LabSwitch.ps1)
+lab_subnet:  "192.168.100.0/24"
+lab_gateway: "192.168.100.1"
+
+# Reserved for the kubeadm phase. Neither may overlap lab_subnet.
+pod_cidr:     "10.244.0.0/16"
+service_cidr: "10.96.0.0/12"
