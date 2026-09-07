@@ -31,4 +31,10 @@
     - "net.bridge.bridge-nf-call-ip6tables"
     - "net.ipv4.ip_forward"
 
-- name: firewalld
+- name: firewalld configuration
+  ansible.posix.firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+    immediate: true
+  loop: "{{ k8s_firewall_ports }}"

@@ -1,0 +1,6 @@
+---
+
+k8s_firewall_ports:
+  - 6443/tcp        # kube-apiserver — workers and kubectl connect here
+  - 2379-2380/tcp   # etcd client (2379) and peer (2380)
+  - 10250/tcp       # kubelet API — kubectl logs/exec, metrics
