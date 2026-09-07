@@ -98,3 +98,14 @@
   ansible.builtin.systemd:
     name: kubelet
     enabled: true
+
+- name: trust kube zone in firewalld
+  ansible.posix.firewalld:
+    source: "{{ item }}"
+    zone: trusted
+    permanent: true
+    state: enabled
+    immediate: true
+  loop:
+    - "{{ pod_cidr }}"
+    - "{{ service_cidr }}"
