@@ -1,0 +1,24 @@
+---
+
+- name: turn swap off
+  when: ansible_facts.swaptotal_mb | int > 0
+  ansible.builtin.command: swapoff -a
+
+
+- name: comment out matching references in /etc/fstab
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '^([^#].*\sswap\s.*)$'
+    replace: '# \1'
+
+- name: activate overlay and br_netfilter in kernel#
+  
+  community.general.modprobe:
+    name: "{{ item }}"
+    state: present
+    persistent: present
+  loop:
+    - "overlay"
+    - "br_netfilter"
+  
+

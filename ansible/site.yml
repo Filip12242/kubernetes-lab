@@ -3,3 +3,4 @@
   hosts: k8s_cluster
   roles:
     - common
+    - k8s-prep
