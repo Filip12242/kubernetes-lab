@@ -52,16 +52,23 @@
     name: containerd.io
     state: present
 
+- name: check whether the containerd config has been generated
+  ansible.builtin.command: grep -q SystemdCgroup /etc/containerd/config.toml
+  register: containerd_config_generated
+  changed_when: false
+  failed_when: false
+
 - name: create containerd config
   ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
-  args:
-    creates: /etc/containerd/config.toml
+  when: containerd_config_generated.rc != 0
+  notify: restart containerd service
 
 - name: configure containerd to use systemd cgroup driver
   ansible.builtin.replace:
     path: /etc/containerd/config.toml
     regexp: '^(\s*SystemdCgroup\s*=\s*)false'
     replace: '\1true'
+  notify: restart containerd service
 
 - name: enable containerd service
   ansible.builtin.systemd:
