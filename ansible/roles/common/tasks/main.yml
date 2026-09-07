@@ -13,6 +13,7 @@
       - tcpdump         # you will want this during the CNI phase
       - chrony
       - policycoreutils-python-utils   # semanage, for the SELinux work later
+      - tar
     state: present
 
 - name: Set the system timezone
