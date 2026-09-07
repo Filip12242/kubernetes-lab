@@ -38,3 +38,33 @@
     state: enabled
     immediate: true
   loop: "{{ k8s_firewall_ports }}"
+
+- name: add Docker CE repository
+  ansible.builtin.yum_repository:
+    name: docker-ce-stable
+    description: Docker CE Stable
+    baseurl: https://download.docker.com/linux/centos/$releasever/$basearch/stable
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/centos/gpg
+
+- name: install containerd
+  ansible.builtin.dnf:
+    name: containerd.io
+    state: present
+
+- name: create containerd config
+  ansible.builtin.shell: containerd config default > /etc/containerd/config.toml
+  args:
+    creates: /etc/containerd/config.toml
+
+- name: configure containerd to use systemd cgroup driver
+  ansible.builtin.replace:
+    path: /etc/containerd/config.toml
+    regexp: '^(\s*SystemdCgroup\s*=\s*)false'
+    replace: '\1true'
+
+- name: enable containerd service
+  ansible.builtin.systemd:
+    name: containerd
+    enabled: true
+    state: started
