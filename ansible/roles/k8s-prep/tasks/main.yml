@@ -75,3 +75,26 @@
     name: containerd
     enabled: true
     state: started
+
+- name: add Kubernetes repository
+  ansible.builtin.yum_repository:
+    name: kubernetes
+    description: "Kubernetes {{ k8s_version }}"
+    baseurl: "https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/rpm/"
+    gpgcheck: true
+    gpgkey: "https://pkgs.k8s.io/core:/stable:/v{{ k8s_version }}/rpm/repodata/repomd.xml.key"
+    exclude: kubelet kubeadm kubectl cri-tools kubernetes-cni
+
+- name: install kubeadm, kubelet and kubectl
+  ansible.builtin.dnf:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    state: present
+    disable_excludes: kubernetes
+
+- name: enable kubelet service
+  ansible.builtin.systemd:
+    name: kubelet
+    enabled: true
