@@ -43,3 +43,11 @@
     name: firewalld
     enabled: true
     state: started
+
+- name: add kube ip's to hosts file
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: |
+      {% for host in groups['k8s_cluster'] %}
+      {{ hostvars[host].ansible_host }}  {{ host }}
+      {% endfor %}
