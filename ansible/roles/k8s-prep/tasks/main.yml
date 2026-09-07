@@ -11,8 +11,7 @@
     regexp: '^([^#].*\sswap\s.*)$'
     replace: '# \1'
 
-- name: activate overlay and br_netfilter in kernel#
-  
+- name: activate overlay and br_netfilter in kernel
   community.general.modprobe:
     name: "{{ item }}"
     state: present
@@ -21,8 +20,13 @@
     - "overlay"
     - "br_netfilter"
 
-- name: sysctl
-  
-  
-  
-
+- name: enable bridge netfilter and IP forwarding for Kubernetes
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    value: '1'
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    sysctl_set: true
+  loop:
+    - "net.bridge.bridge-nf-call-iptables"
+    - "net.bridge.bridge-nf-call-ip6tables"
+    - "net.ipv4.ip_forward"
