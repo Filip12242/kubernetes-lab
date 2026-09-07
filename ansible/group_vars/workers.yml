@@ -4,3 +4,4 @@ k8s_firewall_ports:
   - 10250/tcp         # kubelet API
   - 10256/tcp         # kube-proxy health check
   - 30000-32767/tcp   # NodePort service range
+  - 8472/udp           # flannel VXLAN networking
