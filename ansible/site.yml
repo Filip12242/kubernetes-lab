@@ -4,3 +4,13 @@
   roles:
     - common
     - k8s-prep
+
+- name: Bring up the control plane
+  hosts: control_plane
+  roles:
+    - k8s-control-plane
+
+- name: Join the workers
+  hosts: workers
+  roles:
+    - k8s-worker

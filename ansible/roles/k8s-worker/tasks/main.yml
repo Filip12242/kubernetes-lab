@@ -1,0 +1,20 @@
+---
+
+- name: Check whether this node has already joined
+  ansible.builtin.stat:
+    path: /etc/kubernetes/kubelet.conf
+  register: kubelet_conf
+
+- name: Generate a join command on the control plane
+  # Not run_once: that evaluates `when` for the first host only, so a half-joined
+  # cluster would skip this and fail the rest on an undefined variable.
+  ansible.builtin.command: kubeadm token create --print-join-command
+  delegate_to: "{{ groups['control_plane'][0] }}"
+  register: join_command
+  when: not kubelet_conf.stat.exists
+
+- name: Join the cluster
+  ansible.builtin.command:
+    cmd: "{{ join_command.stdout }}"
+    creates: /etc/kubernetes/kubelet.conf
+  when: not kubelet_conf.stat.exists
