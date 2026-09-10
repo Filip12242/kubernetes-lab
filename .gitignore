@@ -37,3 +37,6 @@ secrets.yml
 secrets.yaml
 secrets.md
 *.secret
+
+# Local Claude Code context, not shared
+CLAUDE.md
