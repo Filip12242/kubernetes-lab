@@ -42,3 +42,4 @@
   become: false
   register: flannel_apply
   changed_when: "'created' in flannel_apply.stdout or 'configured' in flannel_apply.stdout"
+

@@ -14,6 +14,7 @@
       - chrony
       - policycoreutils-python-utils   # semanage, for the SELinux work later
       - tar
+      - nfs-utils       # every node is a client for NFS-backed volumes
     state: present
 
 - name: Set the system timezone
