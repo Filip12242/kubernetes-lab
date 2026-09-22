@@ -5,3 +5,8 @@ k8s_firewall_ports:
   - 2379-2380/tcp   # etcd client (2379) and peer (2380)
   - 10250/tcp       # kubelet API — kubectl logs/exec, metrics
   - 8472/udp        # flannel VXLAN networking
+  - 9100/tcp        # node-exporter, scraped by Prometheus from other nodes
+  - 10249/tcp       # kube-proxy metrics
+  - 10257/tcp       # kube-controller-manager metrics
+  - 10259/tcp       # kube-scheduler metrics
+  - 2381/tcp        # etcd metrics (plain HTTP, unauthenticated)
